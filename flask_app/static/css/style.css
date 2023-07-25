@@ -1,0 +1,5 @@
+.homepage_background {
+    background-image: url("/static/img/library.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
