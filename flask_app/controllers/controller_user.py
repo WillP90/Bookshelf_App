@@ -51,3 +51,8 @@ def user_profile_login():
         return redirect('/')
     session['user_id'] = user.id
     return redirect('/profile')
+
+@app.route('/logout')
+def user_logout():
+    session.clear()
+    return redirect('/')

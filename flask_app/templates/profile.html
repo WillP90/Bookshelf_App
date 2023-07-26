@@ -10,9 +10,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="d-flex justify-content-around">
-            <h1 class="">Welcome {{user.first_name}}</h1>
-            <a href="/logout" class="text-dark">Log Out</a>
+        <div class="d-flex justify-content-around p-2">
+            <h1 class="">My Nook</h1>
+            <a href="/logout" class="btn btn-success text-dark">Log Out</a>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Welcome {{user.first_name}}</h4>
+                <h5 class="card-subtitle">Favorite Genre: </h5>
+                <a href="/edit/profile/{{user.id}}" class="btn btn-success">Edit Profile</a>
+                <a href="/add/book/{{user.id}}" class="btn btn-success">Add Book</a>
+            </div>
         </div>
     </div>
 </body>
