@@ -11,11 +11,11 @@
 <body>
     <div class="container">
         <div class="d-flex justify-content-around m-2">
-            <h1 class="">Edit My Info</h1>
+            <h1 class="">Create Info</h1>
             <a href="/profile" class="btn btn-success text-dark">Back</a>
             <a href="/logout" class="btn btn-success text-dark">Log Out</a>
         </div>
-        <form action="/edit/profile/process" method="POST" class="bg-success col-3 m-3 p-3">
+        <form action="/new/profile/process" method="POST" class="bg-success col-3 m-3 p-3">
             <input type="hidden" name="user_id" value = "{{user_id}}">
             <div class="form-group mb-2">
                 <label for="genre" class="form-label">Genre</label>
