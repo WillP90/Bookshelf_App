@@ -7,7 +7,7 @@ from flask_app.models.model_profile import Profile
 def new_page(user_id):
     return render_template('new_profile.html', user_id = user_id)
 
-@app.post('/new/profile/process')
+@app.post('/profile/process')
 def process_profile():
     data ={
         "genre" : request.form['genre'],
@@ -15,9 +15,14 @@ def process_profile():
         "info" : request.form['info'],
         "user_id" : request.form['user_id']
     }
-    profile = Profile.save_user_profile(data)
-    return redirect('/profile')
+    if Profile.get_one_profile_id(data) == False:
+        profile = Profile.save_user_profile(data)
+        return redirect('/profile', profile = profile)
+    profile = Profile.update_profile(data)
+    return redirect('/profile', profile = profile)
 
 @app.route('/edit/profile/<int:user_id>')
 def edit_page(user_id):
-    return render_template('edit_profile.html', user_id = user_id)
+    # if Profile.get_one_profile_id(user_id) == False:
+    #     return render_template('edit_profile.html', user_id = user_id)
+    return render_template('new_profile.html', user_id = user_id)
