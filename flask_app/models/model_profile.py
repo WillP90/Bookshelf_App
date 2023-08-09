@@ -38,3 +38,4 @@ class Profile:
     def update_profile(cls, user_id):
         query = "UPDATE profiles SET genre = %(genre)s, location = %(location)s, info = %(info)s WHERE user_id = %(user_id)s;"
         results = connectToMySQL(cls.db).query_db(query, user_id)
+        return results

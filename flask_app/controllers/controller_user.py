@@ -33,9 +33,13 @@ def show_users_profile():
     id = {
         'id' : session['user_id']
     }
+    user_id = {
+        'user_id' : session['user_id']
+    }
     # all_recipes = Recipe.get_all_recipes() all_recipes = all_recipes
+    profile = Profile.get_one_profile_id(user_id)
     user = User.get_one_id(id)
-    return render_template('profile.html', user = user)
+    return render_template('profile.html', user = user, profile = profile)
 
 @app.route('/login/user', methods=['POST'])
 def user_profile_login():
