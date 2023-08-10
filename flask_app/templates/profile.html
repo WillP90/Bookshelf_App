@@ -21,12 +21,11 @@
                 <h5 class="card-subtitle mb-1">Location: {{profile.location}}</h5>
                 <h6 class="card-subtitle mb-1">Little About: {{profile.info}}</h6>
                 <a href="/edit/profile/{{user.id}}" class="btn btn-success">Edit Profile</a>
-                <a href="/add/book/{{user.id}}" class="btn btn-success">Add Book</a>
             </div>
         </div>
         <div class="d-flex">
             <a href="/user/bookshelf">
-                <div class="card m-3 button_cards">
+                <div class="card mt-3 button_cards">
                     <img src="/static/img/my_library.jpg" class="card-img-top" alt="My Library">
                     <div class="card-body">
                         <h2>See My Shelf</h2>
@@ -34,7 +33,7 @@
                 </div>
             </a>
             <a href="/search/book">
-                <div class="card mt-3 button_cards">
+                <div class="card m-3 button_cards">
                     <img src="/static/img/search_book.jpg" class="card-img-top" alt="Search Books">
                     <div class="card-body">
                         <h2>Add Book!</h2>

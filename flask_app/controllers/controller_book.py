@@ -7,4 +7,8 @@ from flask_app.models.model_user import User
 def users_bookshelf():
     if 'user_id' not in session:
         return redirect('/logout')
-    return render_template('my_library.html')
+    id = {
+        'id' : session['user_id']
+    }
+    user = User.get_one_id(id)
+    return render_template('my_library.html', user = user)
