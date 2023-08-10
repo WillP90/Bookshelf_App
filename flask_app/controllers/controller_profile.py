@@ -7,6 +7,8 @@ from flask_app.models.model_profile import Profile
 
 @app.route('/edit/profile/<int:user_id>')
 def edit_page(user_id):
+    if 'user_id' not in session:
+        return redirect('/logout')
     profile = Profile.get_one_profile_id(user_id)
     return render_template('edit_profile.html', user_id = user_id, profile = profile)
 

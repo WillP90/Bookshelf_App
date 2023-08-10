@@ -1,6 +1,6 @@
 from flask_app import app
 from flask_app.controllers import controller_user
-from flask_app.controllers import controller_timer
+from flask_app.controllers import controller_book
 from flask_app.controllers import controller_profile
 
 if __name__=='__main__':
