@@ -8,20 +8,26 @@ from flask_app.models.model_book import Book
 
 
 # Helper Function
-def make_request(url ="https://www.googleapis.com/books/v1/volumes?q=search+terms"):
+def make_request(url =f'https://www.googleapis.com/books/v1/volumes?q=search+terms:keyes&key={KEY}'):
     response = requests.get(url)
     return response.json()
 
 @app.route('/search/book')
 def search_for_book():
-    key = 'AIzaSyBCxm0VWW3yC_yjqDCfkqIcj-bPozm3YNw'
-    response = requests.get("https://www.googleapis.com/books/v1/volumes?q=search+terms")
-    print(str(response.status_code).center(20, "-"))
+    # response = requests.get("https://www.googleapis.com/books/v1/volumes?q=search+terms")
+    # print(str(response.status_code).center(20, "-"))
+
     """ Get Request for Books to Google books API"""
-    # if not 'url' in session:
-    #     session['url'] = 'https://www.googleapis.com/books/v1/volumes?q=search+terms'
-    # if 'user_id' not in session:
-    #     return redirect('/logout')
+    # putting url in session for use in next and previous pages
+    if not 'url' in session:
+        session['url'] = 'https://www.googleapis.com/books/v1/volumes?q=search+termskeyes&key=AIzaSyBCxm0VWW3yC_yjqDCfkqIcj-bPozm3YNw'
+    if 'user_id' not in session:
+        return redirect('/logout')
+
+    # saving the request to a variable for easier use using helper function
+    json = make_request(session["url"])
+    pprint(json)
+
 
     return render_template('search_book.html')
 
