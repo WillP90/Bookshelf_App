@@ -25,22 +25,6 @@
                     <input type="submit" class="btn btn-dark btn-outline-success mt-3">
                 </form>
             </div>
-            {% for book in books %}
-                <div class="card w-25">
-                    <img src="{{book.image}}" alt="{{book.name}}" class="card-img-top">
-                    <div class="card-body">
-                        <h4 class="card-title">{{book.name}}</h4>
-                        <p class="card-text">
-                            <strong>Genre:</strong>
-                            {{book.genre}}
-                        </p>
-                        <p class="card-text">
-                            <strong>Description:</strong>
-                            {{book.description}}
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
         </div>
     </div>
 </body>
