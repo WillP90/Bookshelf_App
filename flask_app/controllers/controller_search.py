@@ -9,24 +9,38 @@ import os
 # .env file environment
 header = os.environ.get('KEY')
 
-
-# Helper Function
-def make_request(url =f'https://www.googleapis.com/books/v1/volumes?&key={header}'):
-    response = requests.get(url)
-    return response.json()
-
 @app.route('/search/book')
-def search_for_book():
+def display_book_search():
+    return render_template('search_book.html')
 
+
+@app.route('/book/info')
+def display_book_info():
+    pass
+
+
+
+@app.post('/process/search/title')
+def search_book_title():
+    title_search = request.form['search']
+    return redirect('/view/books')
+
+@app.route('/view/books')
+def view_books_search(title_search):
     """ Get Request for Books to Google books API"""
+    # Helper Function
+    def make_request_title(url =f'https://www.googleapis.com/books/v1/volumes?q={title_search}intitle+:keyes&key={header}'):
+        response = requests.get(url)
+        return response.json()
+
     # putting url in session for use in next and previous pages
     if not 'url' in session:
-        session['url'] = (f'https://www.googleapis.com/books/v1/volumes?&key={header}')
+        session['url'] = (f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle:keyes&key={header}')
     if 'user_id' not in session:
         return redirect('/logout')
 
     # saving the request to a variable for easier use using helper function
-    json = make_request(session["url"])
+    json = make_request_title(session["url"])
     pprint(json)
 
     items_list = []
@@ -37,13 +51,6 @@ def search_for_book():
         # pprint(index)
         items_list.append(index)
         return items_list
-    # pprint(items_list)
+    pprint(items_list)
 
-
-
-    return render_template('search_book.html')
-
-
-@app.post('/process/search')
-def search_name():
-    pass
+    return render_template('search_book.html', books_list = items_list)

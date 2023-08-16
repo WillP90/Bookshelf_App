@@ -17,14 +17,30 @@
         </div>
         <div class="d-flex flex-wrap main-content">
             <div class="card">
-                <form action="/process/search">
+                <form action="/process/search/title">
                     <div class="form-group">
-                        <label for="search">Search for Book</label>
-                        <input type="search" class="form-controll">
+                        <label for="search">Search Book By Title</label>
+                        <input type="text" name= "search"class="form-controll">
                     </div>
-                    <input type="submit" class="btn btn-dark btn-outline-success mt-3">
+                    <button type="submit" class="btn btn-dark btn-outline-success mt-3">Search</button>
                 </form>
             </div>
         </div>
+        {% for book in books_list %}
+            <div class="card w-25">
+                <img src="{{book.image}}" alt="{{book.title}}" class="card-img-top">
+                <div class="card-body">
+                    <h4 class="card-title">{{book.title}}</h4>
+                    <p class="card-text">
+                        <strong>Author:</strong>
+                        {{book.author}}
+                    </p>
+                    <p class="card-text">
+                        <strong>Find book on Google:</strong>
+                        {{book.selflink}}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </body>
