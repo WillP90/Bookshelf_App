@@ -22,20 +22,27 @@ def display_book_info():
 
 @app.post('/process/search/title')
 def search_book_title():
-    title_search = request.form['search']
-    print(title_search)
-    title_search2 = ""
-    for i in title_search:
+    title = request.form['search']
+    # print(title)
+    title_search = ""
+    for i in title:
         if i == " ":
             i = "+"
-        title_search2 += i
-        pprint(i)
-
-    url = f'https://www.googleapis.com/books/v1/volumes?q={title_search2}+intitle+:keyes&key={header}'
+        title_search += i
+        # pprint(i)
+    # creating url for the API call(searches book titles)
+    url = f'https://openlibrary.org/search.json?q={title_search}'
     pprint(url)
-    response = requests.get(url)
-    pprint(response.json()['items'][0]['volumeInfo']['title'])
-    """ Get Request for Books to Google books API"""
+    # creating a response variable to hold the json response
+    json = requests.get(url)
+    response = json.json()
+    pprint(response)
+
+    # url = f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle+:keyes&key={header}'
+    # pprint(url)
+    # response = requests.get(url)
+    # pprint(response.json()['items'][0]['volumeInfo']['title'])
+    """ Get Request for Books to Open Library API"""
 
     # putting url in session for use in next and previous pages
     # if not 'url' in session:
@@ -46,15 +53,15 @@ def search_book_title():
 
     # saving the request to a variable for easier use using helper function
     # pprint(response.json())
-    items_list = []
-    items = response.json()
-    # pprint(items)
-    for i in range(len(items)):
-        index = response.json()['items'][i]['volumeInfo']['title']
-        pprint(index)
-        items_list.append(index)
-        pprint(items_list)
-    return items_list
+    # items_list = []
+    # items = response.json()
+    # # pprint(items)
+    # for i in range(len(items)):
+    #     index = response.json()['items'][i]['volumeInfo']['title']
+    #     pprint(index)
+    #     items_list.append(index)
+    #     pprint(items_list)
+    # return items_list
 
     # for i in items_list:
     #     session['book'] = items_list
