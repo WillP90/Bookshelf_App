@@ -23,41 +23,53 @@ def display_book_info():
 @app.post('/process/search/title')
 def search_book_title():
     title_search = request.form['search']
+    print(title_search)
+    title_search2 = ""
+    for i in title_search:
+        if i == " ":
+            i = "+"
+        title_search2 += i
+        pprint(i)
+
+    url = f'https://www.googleapis.com/books/v1/volumes?q={title_search2}+intitle+:keyes&key={header}'
+    pprint(url)
+    response = requests.get(url)
+    pprint(response.json()['items'][0]['volumeInfo']['title'])
     """ Get Request for Books to Google books API"""
-    # Helper Function
-    def make_request_title(url =f'https://www.googleapis.com/books/v1/volumes?q={title_search}intitle+:keyes&key={header}'):
-        response = requests.get(url)
-        return response.json()
 
     # putting url in session for use in next and previous pages
-    if not 'url' in session:
-        session['url'] = (f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle:keyes&key={header}')
-    if 'user_id' not in session:
-        return redirect('/logout')
+    # if not 'url' in session:
+    #     session['url'] = (f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle:keyes&key={header}')
+    # if 'user_id' not in session:
+    #     return redirect('/logout')
+    # response = requests.get(url =f'https://www.googleapis.com/books/v1/volumes?q={title_search}intitle+:keyes&key={header}')
 
     # saving the request to a variable for easier use using helper function
-    json = make_request_title(session["url"])
-    pprint(json)
+    # pprint(response.json())
     items_list = []
-    items = json['items']
+    items = response.json()
     # pprint(items)
     for i in range(len(items)):
-        index = json['items'][i]['volumeInfo']
-        # pprint(index)
+        index = response.json()['items'][i]['volumeInfo']['title']
+        pprint(index)
         items_list.append(index)
         pprint(items_list)
-        return items_list
-    for i in items_list:
-        session['book'] = {
-            'title': i[0]['title'],
-            # 'image': i['image'],
-        }
-        session['book_list'].append(session['book'])
-        pprint(session['books_list'][0])
+    return items_list
+
+    # for i in items_list:
+    #     session['book'] = items_list
+        # session['book'] = {
+        #     'title': i['title'],
+        #     # 'image': i['image'],
+        # }
+        # session['book_list'].append(session['book'])
+        # pprint(session['books_list'][0])
+        # print(session['book'])
+        # print(i)
 
     return redirect('/view/books')
 
 @app.route('/view/books')
 def view_books_search():
-    books_list = session['book_list']
-    return render_template('search_book.html', books_list = books_list)
+    # books_list = session['book_list']
+    return render_template('search_book.html')
