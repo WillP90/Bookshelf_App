@@ -23,10 +23,6 @@ def display_book_info():
 @app.post('/process/search/title')
 def search_book_title():
     title_search = request.form['search']
-    return redirect('/view/books')
-
-@app.route('/view/books')
-def view_books_search(title_search):
     """ Get Request for Books to Google books API"""
     # Helper Function
     def make_request_title(url =f'https://www.googleapis.com/books/v1/volumes?q={title_search}intitle+:keyes&key={header}'):
@@ -42,7 +38,6 @@ def view_books_search(title_search):
     # saving the request to a variable for easier use using helper function
     json = make_request_title(session["url"])
     pprint(json)
-
     items_list = []
     items = json['items']
     # pprint(items)
@@ -50,7 +45,19 @@ def view_books_search(title_search):
         index = json['items'][i]['volumeInfo']
         # pprint(index)
         items_list.append(index)
+        pprint(items_list)
         return items_list
-    pprint(items_list)
+    for i in items_list:
+        session['book'] = {
+            'title': i[0]['title'],
+            # 'image': i['image'],
+        }
+        session['book_list'].append(session['book'])
+        pprint(session['books_list'][0])
 
-    return render_template('search_book.html', books_list = items_list)
+    return redirect('/view/books')
+
+@app.route('/view/books')
+def view_books_search():
+    books_list = session['book_list']
+    return render_template('search_book.html', books_list = books_list)
