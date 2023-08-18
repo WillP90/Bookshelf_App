@@ -22,27 +22,41 @@ def display_book_info():
 
 @app.post('/process/search/title')
 def search_book_title():
-    title = request.form['search']
+    """ Get Request for Books to Open Library API"""
+    # taking in search perameter from form
+    title = request.form['search'].lower()
     # print(title)
+    # creating empty list for storing revised search
     title_search = ""
+    # loop to replace all empty spaces with a + for the url search
     for i in title:
         if i == " ":
             i = "+"
         title_search += i
         # pprint(i)
     # creating url for the API call(searches book titles)
-    url = f'https://openlibrary.org/search.json?q={title_search}'
+    url = f'https://openlibrary.org/search.json?title={title_search}&page=1'
     pprint(url)
     # creating a response variable to hold the json response
     json = requests.get(url)
+    # storing data in a dictionary
     response = json.json()
-    pprint(response)
+    # this will show me the different keys in the JSON object
+    pprint(response.keys())
+    # printing different things to see the outcomes(Peeling that Onion Baby!!!!!)
+    pprint(response['numFound'])
+    pprint(response['docs'][0].keys())
+    temp_num = 10
+    for i in range(temp_num):
+        pprint(f'Book Title: {response["docs"][i]["title"]}, Author: {response["docs"][i]["author_name"][0]}, Language: {response["docs"][i]["language"]}')
+        pprint(f'Book Keys: {response["docs"][i]["key"]}')
+
+
 
     # url = f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle+:keyes&key={header}'
     # pprint(url)
     # response = requests.get(url)
     # pprint(response.json()['items'][0]['volumeInfo']['title'])
-    """ Get Request for Books to Open Library API"""
 
     # putting url in session for use in next and previous pages
     # if not 'url' in session:
