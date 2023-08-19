@@ -25,16 +25,21 @@ def search_book_title():
     """ Get Request for Books to Open Library API"""
     # taking in search perameter from form
     title = request.form['search'].lower()
-    # print(title)
+    print(title)
+    session['title'] = title
+    return redirect('/view/books')
+
+@app.route('/view/books')
+def view_books_search():
     # creating empty list for storing revised search
     title_search = ""
     # loop to replace all empty spaces with a + for the url search
-    for i in title:
+    for i in session['title']:
         if i == " ":
             i = "+"
         title_search += i
         # pprint(i)
-    # creating url for the API call(searches book titles)
+    # creating urls for the API call(searches book titles)(search by Works Id)
     url = f'https://openlibrary.org/search.json?title={title_search}&page=1'
     pprint(url)
     # creating a response variable to hold the json response
@@ -46,51 +51,44 @@ def search_book_title():
     # printing different things to see the outcomes(Peeling that Onion Baby!!!!!)
     pprint(response['numFound'])
     pprint(response['docs'][0].keys())
-    temp_num = 10
+    # using a temporary variable to store a number.for how many books to display from list
+    temp_num = 5
+    book_titles = []
+    book_authors = []
+    book_langs = []
+    book_works_keys = []
+    books_list = []
     for i in range(temp_num):
-        pprint(f'Book Title: {response["docs"][i]["title"]}, Author: {response["docs"][i]["author_name"][0]}, Language: {response["docs"][i]["language"]}')
-        pprint(f'Book Keys: {response["docs"][i]["key"]}')
+        # appending iformation to the pre set variables
+        book_titles.append(response["docs"][i]["title"])
+        # book_dict['title'] = response["docs"][i]["title"]
+        book_authors.append(response["docs"][i]["author_name"][0])
+        # book_dict['authors'] = response["docs"][i]["author_name"][0]
+        book_langs.append(response["docs"][i]["language"])
+        # book_dict['language'] = response["docs"][i]["language"]
+        book_works_keys.append(response["docs"][i]["key"])
+        books_list.append({'title' : response["docs"][i]["title"], 'authors' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"]})
 
-
-
-    # url = f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle+:keyes&key={header}'
-    # pprint(url)
-    # response = requests.get(url)
-    # pprint(response.json()['items'][0]['volumeInfo']['title'])
-
-    # putting url in session for use in next and previous pages
-    # if not 'url' in session:
-    #     session['url'] = (f'https://www.googleapis.com/books/v1/volumes?q={title_search}+intitle:keyes&key={header}')
-    # if 'user_id' not in session:
-    #     return redirect('/logout')
-    # response = requests.get(url =f'https://www.googleapis.com/books/v1/volumes?q={title_search}intitle+:keyes&key={header}')
-
-    # saving the request to a variable for easier use using helper function
-    # pprint(response.json())
-    # items_list = []
-    # items = response.json()
-    # # pprint(items)
-    # for i in range(len(items)):
-    #     index = response.json()['items'][i]['volumeInfo']['title']
-    #     pprint(index)
-    #     items_list.append(index)
-    #     pprint(items_list)
-    # return items_list
-
-    # for i in items_list:
-    #     session['book'] = items_list
-        # session['book'] = {
-        #     'title': i['title'],
-        #     # 'image': i['image'],
-        # }
-        # session['book_list'].append(session['book'])
-        # pprint(session['books_list'][0])
-        # print(session['book'])
-        # print(i)
-
-    return redirect('/view/books')
-
-@app.route('/view/books')
-def view_books_search():
-    # books_list = session['book_list']
-    return render_template('search_book.html')
+        # printing information about those books
+    pprint(f'Book Title: {book_titles}, Author: {book_authors}, Language: {book_langs}')
+    pprint(f'Book Work Keys: {book_works_keys}')
+    # running loop to take Work number and fetch book info
+    place_holder = 0
+    for works in book_works_keys:
+        works_url = f'https://openlibrary.org/{works}.json'
+        works_json = requests.get(works_url)
+        works_response = works_json.json()
+        pprint(works_response.keys())
+        if works_response['title']:
+            pprint(works_response['title'])
+        if 'description' in works_response.keys():
+            pprint(works_response['description'])
+            books_list[place_holder]['description'] = works_response['description']['value']
+            place_holder+=1
+        else:
+            pprint('no description')
+            books_list[place_holder]['description'] = 'no description'
+            place_holder+=1
+    pprint(f'Books List Is ---->>{books_list}')
+    # make books list
+    return render_template('search_book.html', books_list = books_list)
