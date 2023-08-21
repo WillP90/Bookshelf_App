@@ -38,7 +38,7 @@ def view_books_search():
         if i == " ":
             i = "+"
         title_search += i
-        # pprint(i)
+        # pprint(i) //// Use to see the variables items to make sure its working
     # creating urls for the API call(searches book titles)(search by Works Id)
     url = f'https://openlibrary.org/search.json?title={title_search}&page=1'
     pprint(url)
@@ -53,26 +53,27 @@ def view_books_search():
     pprint(response['docs'][0].keys())
     # using a temporary variable to store a number.for how many books to display from list
     temp_num = 5
+    # setting up empty lists to store response values
     book_titles = []
     book_authors = []
     book_langs = []
     book_works_keys = []
     books_list = []
+    # for loop to run through the top searches coming back/// can be changed by temp_num above
     for i in range(temp_num):
-        # appending iformation to the pre set variables
+        # appending iformation to the pre set variables for printing in the f string below.
         book_titles.append(response["docs"][i]["title"])
-        # book_dict['title'] = response["docs"][i]["title"]
         book_authors.append(response["docs"][i]["author_name"][0])
-        # book_dict['authors'] = response["docs"][i]["author_name"][0]
         book_langs.append(response["docs"][i]["language"])
-        # book_dict['language'] = response["docs"][i]["language"]
         book_works_keys.append(response["docs"][i]["key"])
+        # appending information as a data structure into a empty list to use
         books_list.append({'title' : response["docs"][i]["title"], 'authors' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"]})
 
         # printing information about those books
     pprint(f'Book Title: {book_titles}, Author: {book_authors}, Language: {book_langs}')
     pprint(f'Book Work Keys: {book_works_keys}')
-    # running loop to take Work number and fetch book info
+
+    # Running Loop to take Work number and fetch book info
     place_holder = 0
     for works in book_works_keys:
         works_url = f'https://openlibrary.org/{works}.json'
@@ -89,6 +90,9 @@ def view_books_search():
             pprint('no description')
             books_list[place_holder]['description'] = 'no description'
             place_holder+=1
+        if 'cover'in works_response.keys():
+            pprint(works_response['cover'])
+
     pprint(f'Books List Is ---->>{books_list}')
     # make books list
     return render_template('search_book.html', books_list = books_list)
