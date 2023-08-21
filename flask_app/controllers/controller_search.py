@@ -74,24 +74,41 @@ def view_books_search():
     pprint(f'Book Work Keys: {book_works_keys}')
 
     # Running Loop to take Work number and fetch book info
+    # Creating a placeholder number to use as an index indicator for the loop
     place_holder = 0
     for works in book_works_keys:
+        # running a query for each of the books that returned a Works Key
         works_url = f'https://openlibrary.org/{works}.json'
+        # setting the request to a variable
         works_json = requests.get(works_url)
+        # setting the javascript object notation to the request
         works_response = works_json.json()
+        # printing the keys to make sure they are there
         pprint(works_response.keys())
+        # statement to get the title from the Works Request instead of the Search Request since we need the info there to
         if works_response['title']:
+            # printing it to make sure its there while we are iterating and that its changing
             pprint(works_response['title'])
+        # statement to check if there is a description key in the call because not all the Works Requests have a Description
         if 'description' in works_response.keys():
+            # printing the result if there is a result pulled
             pprint(works_response['description'])
+            # instead of appening to the list, you gotta add the key name and item into the data set thats at that index
             books_list[place_holder]['description'] = works_response['description']['value']
-            place_holder+=1
+        # if there is no description, then it will make one for it that says no description
         else:
             pprint('no description')
-            books_list[place_holder]['description'] = 'no description'
-            place_holder+=1
+            books_list[place_holder]['description'] = 'No Description'
+        # if statement to check for the Cover image in the Works Response
         if 'cover'in works_response.keys():
             pprint(works_response['cover'])
+            books_list[place_holder]['cover']['small']
+            place_holder+=1
+        else:
+            pprint('no cover image')
+            books_list[place_holder]['cover'] = 'No Cover Image'
+            place_holder+=1
+
 
     pprint(f'Books List Is ---->>{books_list}')
     # make books list
