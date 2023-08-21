@@ -58,20 +58,24 @@ def view_books_search():
     book_authors = []
     book_langs = []
     book_works_keys = []
+    book_isbn = []
     books_list = []
     # for loop to run through the top searches coming back/// can be changed by temp_num above
     for i in range(temp_num):
+        pprint(response['docs'][i].keys())
         # appending iformation to the pre set variables for printing in the f string below.
         book_titles.append(response["docs"][i]["title"])
         book_authors.append(response["docs"][i]["author_name"][0])
         book_langs.append(response["docs"][i]["language"])
         book_works_keys.append(response["docs"][i]["key"])
+        book_isbn.append(response["docs"][i]["isbn"][0])
         # appending information as a data structure into a empty list to use
         books_list.append({'title' : response["docs"][i]["title"], 'authors' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"]})
 
         # printing information about those books
     pprint(f'Book Title: {book_titles}, Author: {book_authors}, Language: {book_langs}')
     pprint(f'Book Work Keys: {book_works_keys}')
+    pprint(f'ISBN: {book_isbn}')
 
     # Running Loop to take Work number and fetch book info
     # Creating a placeholder number to use as an index indicator for the loop
@@ -84,7 +88,7 @@ def view_books_search():
         # setting the javascript object notation to the request
         works_response = works_json.json()
         # printing the keys to make sure they are there
-        pprint(works_response.keys())
+        pprint(f"Dictionary key for Book in Index {place_holder}: {works_response.keys()}")
         # statement to get the title from the Works Request instead of the Search Request since we need the info there to
         if works_response['title']:
             # printing it to make sure its there while we are iterating and that its changing
@@ -95,19 +99,27 @@ def view_books_search():
             pprint(works_response['description'])
             # instead of appening to the list, you gotta add the key name and item into the data set thats at that index
             books_list[place_holder]['description'] = works_response['description']['value']
+            place_holder+=1
         # if there is no description, then it will make one for it that says no description
         else:
             pprint('no description')
             books_list[place_holder]['description'] = 'No Description'
+            place_holder+=1
+
+    place_holder2 = 0
+    for isbn in book_isbn:
+        isbn_url = f'https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&jscmd=data&format=json'
+        isbn_json = requests.get(isbn_url)
+        isbn_response = isbn_json.json()
+        pprint(f'Dictionary keys for Book in Index {place_holder2}: {isbn_response.keys()}')
+        place_holder2+=1
         # if statement to check for the Cover image in the Works Response
-        if 'cover'in works_response.keys():
-            pprint(works_response['cover'])
-            books_list[place_holder]['cover']['small']
-            place_holder+=1
-        else:
-            pprint('no cover image')
-            books_list[place_holder]['cover'] = 'No Cover Image'
-            place_holder+=1
+        # if 'cover'in works_response.keys():
+        #     pprint(works_response['cover'])
+        #     books_list[place_holder2]['cover'] = works_response['cover'][0]
+        # else:
+        #     pprint('no cover image')
+        #     books_list[place_holder2]['cover'] = 'No Cover Image'
 
 
     pprint(f'Books List Is ---->>{books_list}')
