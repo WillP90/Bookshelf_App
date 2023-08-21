@@ -12,3 +12,13 @@ def users_bookshelf():
     }
     user = User.get_one_id(id)
     return render_template('my_library.html', user = user)
+
+@app.route('/book/info')
+def view_book_info():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    id = {
+        'id' : session['user_id']
+    }
+    user = User.get_one_id(id)
+    return render_template('book_info.html', user = user)
