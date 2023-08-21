@@ -33,10 +33,10 @@
                     <h4 class="card-title">{{book.title}}</h4>
                     <p class="card-text">
                         <strong>Author:</strong>
-                        {{book.authors}}
+                        {{book.author}}
                     </p>
                 </div>
-                <a href="/book/info" class="btn btn-success text-dark">View Book</a>
+                <a href="/display/info/{{book}}" class="btn btn-success text-dark">View Book</a>
             </div>
         {% endfor %}
     </div>

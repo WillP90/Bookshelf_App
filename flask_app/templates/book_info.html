@@ -15,6 +15,17 @@
             <a href="/profile" class="btn btn-success text-dark">Back</a>
             <a href="/logout" class="btn btn-success text-dark">Log Out</a>
         </div>
-        
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{book.title}}</h4>
+                <p class="card-text">
+                    <strong>Author:</strong>
+                    {{book.author}}
+                </p>
+                <p class="card-text">{{book.language}}</p>
+                <p class="card-text">{{book.description}}</p>
+            </div>
+            <a href="/book/info" class="btn btn-success text-dark">View Book</a>
+        </div>
     </div>
 </body>

@@ -70,7 +70,7 @@ def view_books_search():
         book_works_keys.append(response["docs"][i]["key"])
         book_isbn.append(response["docs"][i]["isbn"][0])
         # appending information as a data structure into a empty list to use
-        books_list.append({'title' : response["docs"][i]["title"], 'authors' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"]})
+        books_list.append({'title' : response["docs"][i]["title"], 'author' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"]})
 
         # printing information about those books
     pprint(f'Book Title: {book_titles}, Author: {book_authors}, Language: {book_langs}')
