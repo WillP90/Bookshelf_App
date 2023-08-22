@@ -35,3 +35,21 @@ class Book:
         for book in results:
             books.append(cls(book))
         return books
+
+    @classmethod
+    def one_book_id(cls, data):
+        query = """
+                SELECT * FROM books
+                WHERE id = %(id)s
+                """
+        results = connectToMySQL(cls.db).query_db(query, data)
+        if results:
+            book = cls(results[0])
+            return book
+        return False
+
+    @classmethod
+    def delete_book(cls, data):
+        query = "DELETE FROM books WHERE id = %(id)s"
+        connectToMySQL(cls.db).query_db(query, data)
+        return

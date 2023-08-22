@@ -56,3 +56,20 @@ def add_book(isbn):
     # print(data)
     Book.save_book(data)
     return redirect('/user/bookshelf')
+
+@app.route('/book/view/<int:id>')
+def view_book_from_library(id):
+    data = {
+        'id' : id
+    }
+    print(data)
+    book = Book.one_book_id(data)
+    return render_template('view_book.html', book = book)
+
+@app.route('/delete/book/<int:id>')
+def delete_book(id):
+    data = {
+        'id' : id
+    }
+    Book.delete_book(data)
+    return redirect('/user/bookshelf')
