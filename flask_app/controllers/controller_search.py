@@ -14,9 +14,6 @@ def display_book_search():
     return render_template('search_book.html')
 
 
-@app.route('/book/info')
-def display_book_info():
-    pass
 
 
 
@@ -70,7 +67,7 @@ def view_books_search():
         book_works_keys.append(response["docs"][i]["key"])
         book_isbn.append(response["docs"][i]["isbn"][0])
         # appending information as a data structure into a empty list to use
-        books_list.append({'title' : response["docs"][i]["title"], 'author' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"]})
+        books_list.append({'title' : response["docs"][i]["title"], 'author' :response["docs"][i]["author_name"][0], 'language' : response["docs"][i]["language"], 'isbn' : response["docs"][i]["isbn"][0], 'works_key' : response["docs"][i]["key"]})
 
         # printing information about those books
     pprint(f'Book Title: {book_titles}, Author: {book_authors}, Language: {book_langs}')
@@ -106,22 +103,24 @@ def view_books_search():
             books_list[place_holder]['description'] = 'No Description'
             place_holder+=1
 
-    place_holder2 = 0
-    for isbn in book_isbn:
-        isbn_url = f'https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&jscmd=data&format=json'
-        isbn_json = requests.get(isbn_url)
-        isbn_response = isbn_json.json()
-        pprint(f'Dictionary keys for Book in Index {place_holder2}: {isbn_response.keys()}')
-        place_holder2+=1
-        # if statement to check for the Cover image in the Works Response
-        # if 'cover'in works_response.keys():
-        #     pprint(works_response['cover'])
-        #     books_list[place_holder2]['cover'] = works_response['cover'][0]
-        # else:
-        #     pprint('no cover image')
-        #     books_list[place_holder2]['cover'] = 'No Cover Image'
-
-
     pprint(f'Books List Is ---->>{books_list}')
-    # make books list
     return render_template('search_book.html', books_list = books_list)
+
+@app.route('/book/info/<book>')
+def display_book_info(book):
+    pprint(book)
+    # data = {
+    #     'title' : book['title']
+    # }
+    # works_url = f'https://openlibrary.org{works_key}'
+    # # setting the request to a variable
+    # works_json = requests.get(works_url)
+    # # setting the javascript object notation to the request
+    # works_response = works_json.json()
+    # if works_response == True:
+    #     pprint(**25)
+    #     pprint(works_response.key())
+    #     pprint(**25)
+    # else:
+    #     print('None')
+    return render_template('book_info.html', book = book)
