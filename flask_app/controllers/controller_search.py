@@ -106,21 +106,68 @@ def view_books_search():
     pprint(f'Books List Is ---->>{books_list}')
     return render_template('search_book.html', books_list = books_list)
 
-@app.route('/book/info/<book>')
-def display_book_info(book):
+# @app.route('/book/info/<int:isbn>')
+# def display(isbn):
+#     print(isbn)
+
+
+@app.route('/book/info/<int:isbn>')
+def display_book_info(isbn):
+    print(f'This is the ISBN----> {isbn} <----')
+    isbn_url = f'https://openlibrary.org/isbn/{isbn}.json'
+    response = requests.get(isbn_url)
+    isbn_response = response.json()
+    print(isbn_response.keys())
+    # print(isbn_response)
+    works = {
+        'title' : isbn_response['title'],
+        'works_key' : isbn_response['works'][0]['key']
+    }
+    print(f'This is Title and Works ID and Language----> {works}<----')
+
+    works_url = f"https://openlibrary.org/{works['works_key']}.json"
+    response2 = requests.get(works_url)
+    works_response = response2.json()
+    print(works_response.keys())
+    # print(works_response['authors'])
+    # print(works_response['authors'][0])
+    # print(works_response['authors'][0]['author'])
+    # print(works_response['authors'][0]['author']['key'])
+    # print(works_response)
+    if 'description' in works_response.keys():
+        description = {
+            'description' : works_response['description']['value']
+        }
+    else:
+        description = {
+            'description' : 'No Description in this search, but I am sure it is a great read!!!'
+        }
+    author = {
+        'author' : works_response['authors'][0]['author']['key']
+    }
+    print(f'Description check----> {description} <----')
+    print(f'This is the Author ID----> {author["author"]} <----')
+
+    author_url = f"https://openlibrary.org{author['author']}.json"
+    print(author_url)
+    response3 = requests.get(author_url)
+    author_response = response3.json()
+    pprint(author_response.keys())
+    # pprint(author_response['name'])
+    # pprint(author_response)
+    author_name = {
+        'name' : author_response['name']
+    }
+    print(f'This is Authors Name----> {author_name} <----')
+
+    book = {
+        'title' : isbn_response['title'],
+        'author' : author_response['name'],
+        'description' : description['description'],
+        'isbn' : int(isbn),
+        'works_key' : isbn_response['works'][0]['key'],
+    }
     pprint(book)
-    # data = {
-    #     'title' : book['title']
-    # }
-    # works_url = f'https://openlibrary.org{works_key}'
-    # # setting the request to a variable
-    # works_json = requests.get(works_url)
-    # # setting the javascript object notation to the request
-    # works_response = works_json.json()
-    # if works_response == True:
-    #     pprint(**25)
-    #     pprint(works_response.key())
-    #     pprint(**25)
-    # else:
-    #     print('None')
-    return render_template('book_info.html', book = book)
+
+
+    return render_template('book_info.html')
