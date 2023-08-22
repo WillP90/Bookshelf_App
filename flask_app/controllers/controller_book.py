@@ -3,6 +3,7 @@ from flask import redirect, request, render_template, session
 from flask_app.models.model_profile import Profile
 from flask_app.models.model_user import User
 from flask_app.models.model_book import Book
+import requests
 
 @app.route("/user/bookshelf")
 def users_bookshelf():
@@ -12,29 +13,46 @@ def users_bookshelf():
         'id' : session['user_id']
     }
     user = User.get_one_id(id)
-    books = Book.get_all_books_user_id(session['user_id'])
-    return render_template('my_library.html', user = user, books = books)
+    books_list = Book.get_all_books_user_id(id)
+    print(books_list)
+    return render_template('my_library.html', user = user, books_list = books_list)
 
-# @app.route('/book/info')
-# def view_book_info():
-#     if 'user_id' not in session:
-#         return redirect('/logout')
-#     id = {
-#         'id' : session['user_id']
-#     }
-#     user = User.get_one_id(id)
-#     return render_template('book_info.html', user = user)
-# place_holder2 = 0
-    # for isbn in book_isbn:
-    #     isbn_url = f'https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&jscmd=data&format=json'
-    #     isbn_json = requests.get(isbn_url)
-    #     isbn_response = isbn_json.json()
-    #     pprint(f'Dictionary keys for Book in Index {place_holder2}: {isbn_response.keys()}')
-    #     place_holder2+=1
-        # if statement to check for the Cover image in the Works Response
-        # if 'cover'in works_response.keys():
-        #     pprint(works_response['cover'])
-        #     books_list[place_holder2]['cover'] = works_response['cover'][0]
-        # else:
-        #     pprint('no cover image')
-        #     books_list[place_holder2]['cover'] = 'No Cover Image'
+@app.route('/add/book/<int:isbn>')
+def add_book(isbn):
+    print(f'This is the ISBN----> {isbn} <----')
+    isbn_url = f'https://openlibrary.org/isbn/{isbn}.json'
+    response = requests.get(isbn_url)
+    isbn_response = response.json()
+    # print(isbn_response.keys())
+    works = {
+        'works_key' : isbn_response['works'][0]['key']
+    }
+    works_url = f"https://openlibrary.org/{works['works_key']}.json"
+    response2 = requests.get(works_url)
+    works_response = response2.json()
+    if 'description' in works_response.keys():
+        description = {
+            'description' : works_response['description']['value']
+        }
+    else:
+        description = {
+            'description' : 'No Description in this search, but I am sure it is a great read!!!'
+        }
+    author = {
+        'author' : works_response['authors'][0]['author']['key']
+    }
+    author_url = f"https://openlibrary.org{author['author']}.json"
+    print(author_url)
+    response3 = requests.get(author_url)
+    author_response = response3.json()
+    data = {
+        'title' : isbn_response['title'],
+        'author' : author_response['name'],
+        'description' : description['description'],
+        'isbn' : int(isbn),
+        'works_key' : isbn_response['works'][0]['key'],
+        'user_id' : session['user_id']
+    }
+    # print(data)
+    Book.save_book(data)
+    return redirect('/user/bookshelf')

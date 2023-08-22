@@ -9,7 +9,7 @@ class Book:
         self.author = data['author']
         self.description = data['description']
         self.isbn = data['isbn']
-        self.language = data['language']
+        self.works_key = data['works_key']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.user_id = data['user_id']
@@ -18,20 +18,20 @@ class Book:
     @classmethod
     def save_book(cls, data):
         query = """
-                INSRET INTO books (title, author, description, isbn, language, user_id)
-                VALUES(%(title)s, %(author)s, %(description)s, %(isbn)s, %(language)s, %(user_id)s);
+                INSERT INTO books (title, author, description, isbn, works_key, user_id)
+                VALUES(%(title)s, %(author)s, %(description)s, %(isbn)s, %(works_key)s, %(user_id)s);
                 """
         result = connectToMySQL(cls.db).query_db(query, data)
         return result
 
     @classmethod
-    def get_all_books_user_id(cls, id):
+    def get_all_books_user_id(cls, data):
         query = """
         SELECT * FROM books
-        WHERE user_id = %(user_id)s;
+        WHERE user_id = %(id)s;
         """
-        results = connectToMySQL(cls.db).query_db(query, id)
-        if results:
-            books = cls(results[0])
-            return books
-        return False
+        books = []
+        results = connectToMySQL(cls.db).query_db(query, data)
+        for book in results:
+            books.append(cls(book))
+        return books

@@ -17,14 +17,19 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">{{}}</h4>
-                <p class="card-text">
-                    <strong>Author:</strong>
-                    {{}}
-                </p>
-                <p class="card-text">{{}}</p>
-                <p class="card-text">{{}}</p>
+                <h2 class="card-title">{{book.title}}</h2>
+                <div class="mb-2">
+                    <h4 class="card-text">Author</h4>
+                    <p class="card-text">{{book.author}}</p>
+                </div>
+                <div class="mb-3">
+                    <h4 class="card-text">Description</h4>
+                    <p class="card-text">{{book.description}}</p>
+                </div>
+                <p class="card-text"><strong>ISBN:</strong> {{book.isbn}}</p>
+                <p class="card-text"><strong>Open Library Works Number:</strong> {{book.works_key}}</p>
             </div>
+            <a href="/add/book/{{book['isbn']}}" class="btn btn-success text-dark">Add Book</a>
         </div>
     </div>
 </body>

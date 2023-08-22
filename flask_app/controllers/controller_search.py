@@ -169,5 +169,4 @@ def display_book_info(isbn):
     }
     pprint(book)
 
-
-    return render_template('book_info.html')
+    return render_template('book_info.html', book = book)
