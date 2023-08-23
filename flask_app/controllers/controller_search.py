@@ -73,6 +73,7 @@ def view_books_search():
     pprint(f'Book Title: {book_titles}, Author: {book_authors}, Language: {book_langs}')
     pprint(f'Book Work Keys: {book_works_keys}')
     pprint(f'ISBN: {book_isbn}')
+    pprint(books_list)
 
     # Running Loop to take Work number and fetch book info
     # Creating a placeholder number to use as an index indicator for the loop
