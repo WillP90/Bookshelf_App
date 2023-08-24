@@ -11,15 +11,15 @@
 <body>
     <div class="container">
         <div class="d-flex justify-content-around m-2">
-            <h1 class="">Edit My Info</h1>
+            <h1 class="text-primary">Edit My Info</h1>
             <a href="/profile" class="btn btn-success text-dark">Back</a>
             <a href="/logout" class="btn btn-success text-dark">Log Out</a>
         </div>
-        <form action="/edit/profile/process" method="POST" class="bg-success col-3 m-3 p-3">
+        <form action="/edit/profile/process" method="POST" class="bg-dark col-sm-6 col-md-6 m-3 p-3">
             <input type="hidden" name="user_id" value = "{{user_id}}">
             <div class="form-group mb-2">
-                <label for="genre" class="form-label">Genre</label>
-                <select name="genre" class="form-select">
+                <label for="genre" class="form-label text-primary">Genre</label>
+                <select name="genre" class="form-select bg-primary">
                     <option selected>Choose from list</option>
                     <option value="Fiction">Fiction</option>
                     <option value="None-Fiction">None-Fiction</option>
@@ -32,14 +32,16 @@
                 </select>
             </div>
             <div class="form-group mb-2">
-                <label for="location" class="form-label">Location</label>
-                <input type="text" name="location" class="form-controll">
+                <label for="location" class="form-label text-primary">Location</label>
+                <input type="text" name="location" class="form-controll bg-primary">
             </div>
             <div class="form-group mb-2">
-                <label for="info" class="form-label">Little About Yourself</label>
-                <textarea name="info" cols="30" rows="10" placeholder="Type here"></textarea>
+                <label for="info" class="form-label text-primary">Little About Yourself</label>
+                <textarea name="info" cols="30" rows="10" placeholder="Type here" class="bg-primary"></textarea>
             </div>
-            <input type="submit" class="btn btn-dark btn-outline-success mt-3">
+            <input type="submit" class="btn btn-success text-dark mt-3">
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 </body>

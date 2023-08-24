@@ -11,35 +11,41 @@
 <body>
     <div class="container">
         <div class="d-flex justify-content-between m-2">
-            <h1 class="">My Library</h1>
+            <h1 class="text-primary">My Library</h1>
             <a href="/logout" class="btn btn-success text-dark">Log Out</a>
         </div>
-        <div class="card">
+        <div class="card m-2">
             <div class="card-body">
                 <h4 class="card-title mb-1">Welcome {{user.first_name}}</h4>
                 <h5 class="card-subtitle mb-1">Favorite Genre: {{profile.genre}}</h5>
                 <h5 class="card-subtitle mb-1">Location: {{profile.location}}</h5>
                 <h6 class="card-subtitle mb-1">Little About: {{profile.info}}</h6>
-                <a href="/edit/profile/{{user.id}}" class="btn btn-success">Edit Profile</a>
+                <a href="/edit/profile/{{user.id}}" class="btn btn-success text-dark">Edit Profile</a>
             </div>
         </div>
-        <div class="d-flex">
-            <a href="/user/bookshelf">
-                <div class="card mt-3 button_cards">
-                    <img src="/static/img/my_library.jpg" class="card-img-top" alt="My Library">
-                    <div class="card-body">
-                        <h2>See My Shelf</h2>
+        <div class="row">
+            <div class="col-sm-6  col-md-4">
+                <a href="/user/bookshelf">
+                    <div class="card m-2 button_cards">
+                        <img src="/static/img/my_library.jpg" class="card-img-top" alt="My Library">
+                        <div class="card-body">
+                            <h2 class="text-primary">See My Shelf</h2>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <a href="/search/book">
-                <div class="card m-3 button_cards">
-                    <img src="/static/img/search_book.jpg" class="card-img-top" alt="Search Books">
-                    <div class="card-body">
-                        <h2>Add Book!</h2>
+                </a>
+            </div>
+            <div class="col-sm-6  col-md-4">
+                <a href="/search/book">
+                    <div class="card m-2 button_cards">
+                        <img src="/static/img/search_book.jpg" class="card-img-top" alt="Search Books">
+                        <div class="card-body">
+                            <h2 class="text-primary">Add Book!</h2>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 </body>
